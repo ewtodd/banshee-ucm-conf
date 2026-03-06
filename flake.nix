@@ -56,7 +56,7 @@
               }
             ];
 
-            # Rename the card from "Alder Lake PCH-P High Definition Audio Controller"
+            # Clean device/node names (override "Alder Lake PCH-P High Definition Audio Controller")
             services.pipewire.wireplumber.configPackages = [
               (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-banshee-audio.conf" ''
                 monitor.alsa.rules = [
@@ -68,7 +68,112 @@
                     ]
                     actions = {
                       update-props = {
-                        device.description = ""
+                        device.description = "Audio"
+                        device.nick = "Audio"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*Speaker*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "Speaker"
+                        node.nick = "Speaker"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*Headphones*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "Headphones"
+                        node.nick = "Headphones"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_input.*adl_rt5682*Headset*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "Headset Microphone"
+                        node.nick = "Headset Mic"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_input.*adl_rt5682*Mic*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "Internal Microphone"
+                        node.nick = "Internal Mic"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*HDMI1*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "HDMI / DisplayPort 1"
+                        node.nick = "HDMI 1"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*HDMI2*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "HDMI / DisplayPort 2"
+                        node.nick = "HDMI 2"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*HDMI3*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "HDMI / DisplayPort 3"
+                        node.nick = "HDMI 3"
+                      }
+                    }
+                  }
+                  {
+                    matches = [
+                      {
+                        node.name = "~alsa_output.*adl_rt5682*HDMI4*"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        node.description = "HDMI / DisplayPort 4"
+                        node.nick = "HDMI 4"
                       }
                     }
                   }
