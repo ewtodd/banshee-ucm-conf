@@ -28,11 +28,15 @@
               chmod -R u+w $out/share/alsa/ucm2
 
               # Overlay banshee-specific configs
-              rm -rf $out/share/alsa/ucm2/sof-rt5682
+              rm -rf $out/share/alsa/ucm2/sof-rt5682 $out/share/alsa/ucm2/conf.d/sof-rt5682
               cp -r ${self}/sof-rt5682 $out/share/alsa/ucm2/sof-rt5682
               cp -r ${self}/codecs/* $out/share/alsa/ucm2/codecs/
               cp -r ${self}/common/* $out/share/alsa/ucm2/common/
               cp -r ${self}/platforms/* $out/share/alsa/ucm2/platforms/
+
+              # Create conf.d entry so ALSA UCM discovers the config
+              mkdir -p $out/share/alsa/ucm2/conf.d/sof-rt5682
+              ln -s ../../sof-rt5682/sof-rt5682.conf $out/share/alsa/ucm2/conf.d/sof-rt5682/sof-rt5682.conf
 
               runHook postInstall
             '';
