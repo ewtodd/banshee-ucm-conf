@@ -18,29 +18,30 @@
         let
           cfg = config.hardware.banshee-audio;
 
-          banshee-ucm-conf = pkgs.alsa-ucm-conf.overrideAttrs (old: {
+          banshee-ucm-conf = pkgs.alsa-ucm-conf.overrideAttrs {
+            unpackPhase = ''
+              runHook preUnpack
+              tar xf "$src"
+              runHook postUnpack
+            '';
             installPhase = ''
               runHook preInstall
               mkdir -p $out/share/alsa
-
-              # Install upstream UCM2 configs
-              cp -r ucm2 $out/share/alsa/
-              chmod -R u+w $out/share/alsa/ucm2
+              cp -r alsa-ucm*/{ucm,ucm2} $out/share/alsa
+              chmod -R u+w $out/share/alsa
 
               # Overlay banshee-specific configs
-              rm -rf $out/share/alsa/ucm2/sof-rt5682 $out/share/alsa/ucm2/conf.d/sof-rt5682
-              cp -r ${self}/sof-rt5682 $out/share/alsa/ucm2/sof-rt5682
+              cp -r ${self}/common $out/share/alsa/ucm2
               cp -r ${self}/codecs/* $out/share/alsa/ucm2/codecs/
-              cp -r ${self}/common/* $out/share/alsa/ucm2/common/
               cp -r ${self}/platforms/* $out/share/alsa/ucm2/platforms/
 
-              # Create conf.d entry so ALSA UCM discovers the config
-              mkdir -p $out/share/alsa/ucm2/conf.d/sof-rt5682
-              ln -s ../../sof-rt5682/sof-rt5682.conf $out/share/alsa/ucm2/conf.d/sof-rt5682/sof-rt5682.conf
+              # Replace sof-rt5682 in conf.d (how ALSA UCM discovers configs)
+              rm -rf $out/share/alsa/ucm2/conf.d/sof-rt5682
+              cp -r ${self}/sof-rt5682 $out/share/alsa/ucm2/conf.d/sof-rt5682
 
               runHook postInstall
             '';
-          });
+          };
         in
         {
           options.hardware.banshee-audio = {
