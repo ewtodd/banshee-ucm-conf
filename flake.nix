@@ -70,8 +70,8 @@
                     ]
                     actions = {
                       update-props = {
-                        device.description = ""
-                        device.nick = ""
+                        device.description = "Audio"
+                        device.nick = "Audio"
                       }
                     }
                   }
