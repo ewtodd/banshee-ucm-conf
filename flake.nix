@@ -30,12 +30,10 @@
               cp -r alsa-ucm*/{ucm,ucm2} $out/share/alsa
               chmod -R u+w $out/share/alsa
 
-              # Overlay banshee-specific configs
               cp -r ${self}/common $out/share/alsa/ucm2
               cp -r ${self}/codecs/* $out/share/alsa/ucm2/codecs/
               cp -r ${self}/platforms/* $out/share/alsa/ucm2/platforms/
 
-              # Replace sof-rt5682 in conf.d (how ALSA UCM discovers configs)
               rm -rf $out/share/alsa/ucm2/conf.d/sof-rt5682
               cp -r ${self}/sof-rt5682 $out/share/alsa/ucm2/conf.d/sof-rt5682
 
@@ -61,7 +59,6 @@
               }
             ];
 
-            # Clean device/node names (override "Alder Lake PCH-P High Definition Audio Controller")
             services.pipewire.wireplumber.configPackages = [
               (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-banshee-audio.conf" ''
                 monitor.alsa.rules = [
@@ -74,7 +71,7 @@
                     actions = {
                       update-props = {
                         device.description = "Audio"
-                        device.nick = "Audio"
+                        device.nick = ""
                       }
                     }
                   }
