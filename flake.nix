@@ -19,15 +19,10 @@
           cfg = config.hardware.banshee-audio;
 
           banshee-ucm-conf = pkgs.alsa-ucm-conf.overrideAttrs {
-            unpackPhase = ''
-              runHook preUnpack
-              tar xf "$src"
-              runHook postUnpack
-            '';
             installPhase = ''
               runHook preInstall
               mkdir -p $out/share/alsa
-              cp -r alsa-ucm*/{ucm,ucm2} $out/share/alsa
+              cp -r {ucm,ucm2} $out/share/alsa
               chmod -R u+w $out/share/alsa
 
               cp -r ${self}/common $out/share/alsa/ucm2
